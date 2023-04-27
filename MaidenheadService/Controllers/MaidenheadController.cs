@@ -3,10 +3,10 @@ using MaidenheadLib;
 using MaidenheadService.Model;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MaindenheadService.Controllers;
+namespace MaidenheadService.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1/maidenhead")]
 public class MaidenheadController: ControllerBase
 {
     private readonly ILogger<MaidenheadController> _logger;
@@ -20,7 +20,7 @@ public class MaidenheadController: ControllerBase
     [Route("bearing")]
     [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public IActionResult Bearing([FromQuery]string srcGrid, [FromQuery]string destGrid)
+    public IActionResult GetBearing([FromQuery]string srcGrid, [FromQuery]string destGrid)
     {
         if (!string.IsNullOrEmpty(srcGrid) && !string.IsNullOrEmpty(destGrid))
         {
@@ -35,9 +35,9 @@ public class MaidenheadController: ControllerBase
     
     [HttpGet]
     [Route("distance")]
-    [ProducesResponseType(typeof(Distance), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof (Distance), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public IActionResult Distance([FromQuery]string srcGrid, [FromQuery]string destGrid)
+    public IActionResult GetDistance([FromQuery]string srcGrid, [FromQuery]string destGrid)
     {
         if (!string.IsNullOrEmpty(srcGrid) && !string.IsNullOrEmpty(destGrid))
         {
@@ -48,5 +48,14 @@ public class MaidenheadController: ControllerBase
         }
 
         return BadRequest("Missing source or destination grid");
+    }
+    
+    [HttpGet]
+    [Route("grid")]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+    public IActionResult GetGrid([FromQuery]double lat, [FromQuery]double lon)
+    {
+        var grid = MaidenheadLocator.LatLngToLocator(lat, lon);
+        return Ok(grid);
     }
 }
