@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace MaidenheadService.Controllers;
 
 [ApiController]
-[Route("api/v1/maidenhead")]
+[Route("api/v{version:apiVersion}/maidenhead")]
+[ApiVersion("1.0")]
 public class MaidenheadController: ControllerBase
 {
     private readonly ILogger<MaidenheadController> _logger;
@@ -18,6 +19,7 @@ public class MaidenheadController: ControllerBase
     
     [HttpGet]
     [Route("bearing")]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public IActionResult GetBearing([FromQuery]string srcGrid, [FromQuery]string destGrid)
@@ -35,6 +37,7 @@ public class MaidenheadController: ControllerBase
     
     [HttpGet]
     [Route("distance")]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType(typeof (Distance), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public IActionResult GetDistance([FromQuery]string srcGrid, [FromQuery]string destGrid)
@@ -52,6 +55,7 @@ public class MaidenheadController: ControllerBase
     
     [HttpGet]
     [Route("grid")]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
     public IActionResult GetGrid([FromQuery]double lat, [FromQuery]double lon)
     {
